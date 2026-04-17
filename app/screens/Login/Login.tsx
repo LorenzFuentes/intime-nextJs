@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Sparkles } from 'lucide-react';
-import Input from '../components/Input';
+import Input from '../../components/Input';
 
 const Login: React.FC = () => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -12,8 +14,17 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log('Login attempt:', { email, password });
+    
+    // Simulate API call / authentication
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Store user info in localStorage
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('userEmail', email);
+    
+    // Redirect to dashboard route
+    router.push('/screens/dashboard');
+    
     setIsLoading(false);
   };
 
@@ -31,16 +42,17 @@ const Login: React.FC = () => {
           <h1 className="login-title">InTime</h1>
           <p className="login-description">
             Manage users, admins, events, and more with <span className="highlight">InTime</span>, 
-            the ultimate time management solution.
+            the ultimate time management solution. Stay organized and efficient with our 
+            user-friendly platform.
           </p>
           <div className="feature-list">
             <div className="feature-item">
               <div className="feature-dot"></div>
-              <span>Event Scheduling</span>
+              <span>Smart Scheduling</span>
             </div>
             <div className="feature-item">
               <div className="feature-dot"></div>
-              <span>User Management</span>
+              <span>Team Collaboration</span>
             </div>
             <div className="feature-item">
               <div className="feature-dot"></div>
@@ -86,7 +98,14 @@ const Login: React.FC = () => {
           </div>
           
           <button type="submit" className="login-button" disabled={isLoading}>
-            {isLoading ? <div className="spinner"></div> : 'Sign In'}
+            {isLoading ? (
+              <>
+                <div className="spinner"></div>
+                Signing in...
+              </>
+            ) : (
+              'Sign In'
+            )}
           </button>
           
           <p className="signup-prompt">
