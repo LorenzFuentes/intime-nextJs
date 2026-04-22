@@ -992,3 +992,22 @@ body {
     text-align: center;
   }
 }
+
+
+.terms-agreement {
+  margin: 0.5rem 0;
+}
+
+.terms-agreement .checkbox-label {
+  font-size: 0.8rem;
+  color: #a1a5b0;
+}
+
+.terms-agreement .checkbox-label a {
+  color: #80c65E;
+  text-decoration: none;
+}
+
+.terms-agreement .checkbox-label a:hover {
+  text-decoration: underline;
+}
