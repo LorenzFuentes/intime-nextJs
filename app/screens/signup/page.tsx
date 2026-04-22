@@ -5,31 +5,52 @@ import { useRouter } from 'next/navigation';
 import { Sparkles } from 'lucide-react';
 import Input from '../../components/Input';
 
-const Login: React.FC = () => {
+const Signup: React.FC = () => {
   const router = useRouter();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validation
+    if (!name || !email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+    
+    setError('');
     setIsLoading(true);
     
-    // Simulate API call / authentication
+    // Simulate account creation API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // Store user info in localStorage
+    // Store user info
     localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('userName', name);
     localStorage.setItem('userEmail', email);
     
-    // Redirect to dashboard route
-    router.push('/screens/dashboard');
-    
-    setIsLoading(false);
+    // Redirect to dashboard
+    window.location.href = '/screens/dashboard';
   };
 
   return (
     <div className="login-container">
+      {/* Animated background blobs */}
       <div className="bg-blob-1"></div>
       <div className="bg-blob-2"></div>
       <div className="bg-blob-3"></div>
@@ -41,33 +62,49 @@ const Login: React.FC = () => {
           </div>
           <h1 className="login-title">InTime</h1>
           <p className="login-description">
-            Manage users, admins, events, and more with <span className="highlight">InTime</span>, 
-            the ultimate time management solution. Stay organized and efficient with our 
-            user-friendly platform.
+            Join <span className="highlight">InTime</span> and start managing your time 
+            efficiently. Create an account to access smart scheduling, team collaboration, 
+            and powerful analytics.
           </p>
-          <div className="feature-list">
+          {/* <div className="feature-list">
             <div className="feature-item">
               <div className="feature-dot"></div>
-              <span>Smart Scheduling</span>
+              <span>Free 14-day trial</span>
             </div>
             <div className="feature-item">
               <div className="feature-dot"></div>
-              <span>Team Collaboration</span>
+              <span>No credit card required</span>
             </div>
             <div className="feature-item">
               <div className="feature-dot"></div>
-              <span>Analytics Dashboard</span>
+              <span>Cancel anytime</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       
       <div className="login-right">
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-header">
-            <h2 className="form-title">Welcome back</h2>
-            <p className="form-subtitle">Sign in to your account</p>
+            <h2 className="form-title">Create account</h2>
+            <p className="form-subtitle">Start your journey with InTime</p>
           </div>
+          
+          {error && (
+            <div className="error-message">
+              <span>{error}</span>
+            </div>
+          )}
+          
+          <Input
+            type="text"
+            label="Full name"
+            placeholder="Juan Dela Cruz"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            name="name"
+            required
+          />
           
           <Input
             type="email"
@@ -89,27 +126,36 @@ const Login: React.FC = () => {
             required
           />
           
-          <div className="form-options">
+          <Input
+            type="password"
+            label="Confirm password"
+            placeholder="••••••••"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            name="confirmPassword"
+            required
+          />
+          
+          <div className="terms-agreement">
             <label className="checkbox-label">
-              <input type="checkbox" />
-              <span>Remember me</span>
+              <input type="checkbox" required />
+              <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
             </label>
-            <a href="#" className="forgot-link">Forgot password?</a>
           </div>
           
           <button type="submit" className="login-button" disabled={isLoading}>
             {isLoading ? (
               <>
                 <div className="spinner"></div>
-                Signing in...
+                Creating account...
               </>
             ) : (
-              'Sign In'
+              'Sign Up'
             )}
           </button>
           
           <p className="signup-prompt">
-            Don't have an account? <a href="/screens/signup">Create account</a>
+            Already have an account? <a href="/">Sign in</a>
           </p>
         </form>
       </div>
@@ -117,4 +163,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Signup;
