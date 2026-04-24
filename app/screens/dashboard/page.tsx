@@ -27,7 +27,7 @@ const Dashboard: React.FC = () => {
 
   // Mock user data
   const user = {
-    name: 'Lorenz Sebastian Fuentes',
+    name: 'Lorenz Fuentes',
     email: 'lorenz.fuentes@intime.com',
     role: 'Frontend Developer',
     avatar: 'https://ui-avatars.com/api/?name=Lorenz+Fuentes&background=80c65E&color=fff',
@@ -123,14 +123,14 @@ const Dashboard: React.FC = () => {
             <User size={20} />
             <span>Dashboard</span>
           </a>
-          <a href="#" className="nav-item">
+          {/* <a href="#" className="nav-item">
             <Calendar size={20} />
             <span>Schedule</span>
-          </a>
-          {/* <a href="#" className="nav-item">
-            <TrendingUp size={20} />
-            <span>Reports</span>
           </a> */}
+          <a href="/screens/event" className="nav-item">
+                  <Calendar size={20} />
+            <span>Events</span>
+          </a>
           <a href="#" className="nav-item">
             <Settings size={20} />
             <span>Settings</span>
@@ -138,10 +138,17 @@ const Dashboard: React.FC = () => {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="user-status">
-            <div className={`status-dot ${isTimedIn ? 'active' : ''}`}></div>
-            {/* <span>{isTimedIn ? 'On Shift' : 'Off Duty'}</span> */}
+          <div className="user-info">
+            <img src={user.avatar} alt={user.name} className="sidebar-avatar" />
+            <div className="user-details">
+              <span className="user-name">{user.name}</span>
+              <span className="user-email">{user.email}</span>
+            </div>
           </div>
+          <button className="logout-btn" onClick={() => window.location.href = '/'}>
+            <LogOut size={18} />
+            Sign Out
+          </button>
         </div>
       </aside>
 
